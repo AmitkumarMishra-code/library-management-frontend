@@ -18,6 +18,7 @@ import { Book, Category, Menu, People } from '@material-ui/icons'
 import React, { useState } from "react";
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import BooksList from "./BooksList";
+import SignUp from "./SignUp";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -36,7 +37,10 @@ const useStyles = makeStyles((theme) => ({
         width: 'auto',
     },
     paddedContainer:{
-        padding: theme.spacing(5)
+        padding: theme.spacing(5),
+        justifyContent:'center',
+        alignItems:'center',
+        display: 'flex'
     }
 }));
 export default function Main() {
@@ -48,6 +52,9 @@ export default function Main() {
                         <Typography align='left' variant='h3'>
                             Welcome to McLaren Library
                     </Typography>
+                    </Route>
+                    <Route exact path='/signup'>
+                        <SignUp />
                     </Route>
                     <Route exact path='/books'>
                         <BooksList />
