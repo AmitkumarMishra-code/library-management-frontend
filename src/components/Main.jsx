@@ -16,8 +16,9 @@ import {
 } from "@material-ui/core";
 import { Book, Category, Menu, People } from '@material-ui/icons'
 import React, { useState } from "react";
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Link, Route, Switch, useHistory } from 'react-router-dom';
 import BooksList from "./BooksList";
+import Login from "./Login";
 import SignUp from "./SignUp";
 
 const useStyles = makeStyles((theme) => ({
@@ -56,6 +57,9 @@ export default function Main() {
                     <Route exact path='/signup'>
                         <SignUp />
                     </Route>
+                    <Route exact path = '/login'>
+                        <Login/>
+                    </Route>
                     <Route exact path='/books'>
                         <BooksList />
                     </Route>
@@ -84,6 +88,7 @@ export default function Main() {
 function Wrapper(props) {
     const classes = useStyles()
     let [drawerOpen, setDrawerOpen] = useState(false)
+    const history = useHistory()
 
     let toggleDrawer = () => {
         setDrawerOpen(prev => !prev)
@@ -106,7 +111,7 @@ function Wrapper(props) {
                     <Typography variant="h6" className={classes.title}>
                         McLaren College Library
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    <Button color="inherit" onClick = {()=>history.push('/login')}>Login</Button>
                 </Toolbar>
             </AppBar>
             <React.Fragment>

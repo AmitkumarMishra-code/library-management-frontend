@@ -1,5 +1,7 @@
 import { Button, makeStyles, Paper, TextField } from "@material-ui/core";
 import { useState } from "react";
+import { useHistory } from "react-router";
+
 
 const useStyles = makeStyles({
     container: {
@@ -23,6 +25,7 @@ export default function SignUp() {
     const [email, setEmail] = useState('')
     const [loading, setLoading] = useState(false)
     const [image, setImage] = useState(null)
+    const history = useHistory()
 
     const classes = useStyles()
     const url = 'http://localhost:3300/auth/signup'
@@ -44,6 +47,9 @@ export default function SignUp() {
             console.log(await response.text())
             setLoading(false)
             return
+        }
+        else{
+            history.push('/login')
         }
         let result = await response.json()
         console.log(result)

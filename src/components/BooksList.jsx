@@ -19,7 +19,13 @@ export default function BooksList() {
 
     const url = 'http://localhost:3300/books'
     let getBooks = async () => {
-        let response = await fetch(url)
+        let access_Token = window.localStorage.getItem('access_Token')
+        let response = await fetch(url, {
+            method:'GET',
+            headers:{
+                'Authorization': `Bearer ${access_Token}`
+            }
+        })
         let data = await response.json()
         setBooks(data)
         setLoading(false)
