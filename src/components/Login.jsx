@@ -36,10 +36,11 @@ export default function Login() {
             setDisabled(false)
             return
         }
-        else{
+        else {
             console.log(data.result)
             setDisabled(false)
             window.localStorage.setItem('access_Token', data.access_Token)
+            window.localStorage.setItem('refresh_Token', data.refresh_Token)
             history.push('/books')
         }
     }
@@ -58,9 +59,17 @@ export default function Login() {
             >
                 Login
                 </Button>
-                <p>
-                    {error}
-                </p>
+
+            <Button
+                type='raised'
+                variant='contained'
+                color='primary'
+                onClick={() => history.push('/signup')}>
+                New User? Sign Up
+                </Button>
+            <p>
+                {error}
+            </p>
         </Paper>
     )
 }

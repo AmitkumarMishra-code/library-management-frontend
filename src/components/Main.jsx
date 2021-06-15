@@ -14,10 +14,12 @@ import {
     Box,
     Container
 } from "@material-ui/core";
-import { Book, Category, Menu, People } from '@material-ui/icons'
+import { Book, Category, Menu, People, AccountCircle } from '@material-ui/icons'
 import React, { useState } from "react";
-import { BrowserRouter as Router, Link, Route, Switch, useHistory } from 'react-router-dom';
+import { Link, Route, Switch, useHistory } from 'react-router-dom';
+import interceptors from "../interceptors";
 import BooksList from "./BooksList";
+import Categories from "./Categories";
 import Login from "./Login";
 import SignUp from "./SignUp";
 
@@ -37,16 +39,18 @@ const useStyles = makeStyles((theme) => ({
     fullList: {
         width: 'auto',
     },
-    paddedContainer:{
+    paddedContainer: {
         padding: theme.spacing(5),
-        justifyContent:'center',
-        alignItems:'center',
+        justifyContent: 'center',
+        alignItems: 'center',
         display: 'flex'
     }
 }));
 export default function Main() {
+    let history = useHistory()
+    interceptors(history)
     return (
-        <Router>
+        <>
             <Wrapper>
                 <Switch>
                     <Route exact path='/'>
@@ -57,16 +61,14 @@ export default function Main() {
                     <Route exact path='/signup'>
                         <SignUp />
                     </Route>
-                    <Route exact path = '/login'>
-                        <Login/>
+                    <Route exact path='/login'>
+                        <Login />
                     </Route>
                     <Route exact path='/books'>
                         <BooksList />
                     </Route>
                     <Route exact path='/categories'>
-                        <Typography align='left' variant='h3'>
-                            List of Categories
-                    </Typography>
+                        <Categories />
                     </Route>
                     <Route exact path='/members'>
                         <Typography align='left' variant='h3'>
@@ -81,7 +83,7 @@ export default function Main() {
 
                 </Switch>
             </Wrapper>
-        </Router>
+        </>
     )
 }
 
@@ -111,7 +113,7 @@ function Wrapper(props) {
                     <Typography variant="h6" className={classes.title}>
                         McLaren College Library
                     </Typography>
-                    <Button color="inherit" onClick = {()=>history.push('/login')}>Login</Button>
+                    <Button color="inherit" onClick={() => history.push('/login')}>Login</Button>
                 </Toolbar>
             </AppBar>
             <React.Fragment>
@@ -124,6 +126,7 @@ function Wrapper(props) {
                         <Typography align='center' variant='h5'>Menu</Typography>
                         <Box m={2} />
                         {[
+                            { text: 'Login', icons: <AccountCircle />, link: '/login' },
                             { text: 'Books', icons: <Book />, link: '/books' },
                             { text: 'Categories', icons: <Category />, link: '/categories' },
                             { text: 'Members', icons: <People />, link: '/members' },
@@ -139,7 +142,7 @@ function Wrapper(props) {
                     </List>
                 </Drawer>
             </React.Fragment>
-            <Container fixed className = {classes.paddedContainer}>
+            <Container fixed className={classes.paddedContainer}>
                 {props.children}
             </Container>
         </div>

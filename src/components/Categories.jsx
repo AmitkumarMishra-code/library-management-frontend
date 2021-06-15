@@ -1,29 +1,31 @@
 import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, List, ListItem, ListItemText, makeStyles, Paper, Typography } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete'
+
 import axios from "axios";
 import { useEffect, useState } from "react";
-const useStyles = makeStyles((theme) => ({
-    customPaper: {
-        padding: theme.spacing(2),
-        width: '50%'
+
+const useStyles = makeStyles({
+    container: {
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '18px',
+        padding: '12px',
+        width: '50%',
+        justifyContent: 'center'
     },
-    margin: {
-        margin: theme.spacing(1),
-    },
-}));
-export default function BooksList() {
+});
+export default function Categories() {
     const classes = useStyles()
     const [loading, setLoading] = useState(true)
-    const [books, setBooks] = useState([])
+    const [categories, setCategories] = useState([])
     const [openDialog, setOpenDialog] = useState(false)
-    const [selectedBook, setSelectedBook] = useState(null)
+    const [selectedCategory, setSelectedCategory] = useState(null)
 
-
-    const url = '/books'
+    const url = '/categories'
     let getBooks = async () => {
         let response = await axios.get(url)
         let data = await response.data
-        setBooks(data)
+        setCategories(data)
         setLoading(false)
     }
 
@@ -31,35 +33,36 @@ export default function BooksList() {
         getBooks()
     }, [])
 
-    useEffect(() => { }, [books])
+    useEffect(() => { }, [categories])
 
-    let dialogHandler = (book) => {
+    let dialogHandler = (category) => {
         setOpenDialog(true)
-        setSelectedBook(book)
+        setSelectedCategory(category)
     }
 
     let handleClose = () => {
         setOpenDialog(false)
     }
 
+
     return (
-        <Paper elevation={3} className={classes.customPaper}>
+        <Paper elevation={2} className={classes.container}>
             <Typography variant='h3' align='center' style={{ borderBottom: '1px solid black' }}>
-                All Books
-            </Typography>
+                Categories
+        </Typography>
             {loading ?
                 <Box m={2} textAlign='center'>
                     <CircularProgress />
                 </Box> :
                 <List>
-                    {books.map((book, index) => {
+                    {categories.map((category, index) => {
                         return (
-                            <ListItem key ={index}>
-                                <ListItemText primary={book.title} secondary={book.authors.join(', ')} />
+                            <ListItem >
+                                <ListItemText primary={category.name} />
                                 <IconButton
                                     aria-label="delete"
                                     className={classes.margin}
-                                    onClick={() => dialogHandler(book)}
+                                    onClick={() => dialogHandler(category)}
                                 >
                                     <DeleteIcon />
                                 </IconButton>
@@ -71,24 +74,24 @@ export default function BooksList() {
             {openDialog && <ConfirmDialog
                 open={openDialog}
                 handleClose={handleClose}
-                book={selectedBook}
-                setBooks={setBooks}
+                category={selectedCategory}
+                setCategories={setCategories}
             />}
         </Paper>
     )
 }
 
-function ConfirmDialog({ open, book, handleClose, setBooks }) {
+function ConfirmDialog({ open, category, handleClose, setCategories }) {
     const [deleting, setDeleting] = useState(false)
     const [error, setError] = useState('')
     const url = 'http://localhost:3300/books'
 
     let deleteHandler = async () => {
         setDeleting(true)
-        let response = await fetch(url + '/' + book._id, { method: 'DELETE' })
+        let response = await fetch(url + '/' + category._id, { method: 'DELETE' })
         if (response.status === 201) {
             setDeleting(false)
-            setBooks(prev => prev.filter(val => val._id !== book._id))
+            setCategories(prev => prev.filter(val => val._id !== category._id))
             handleClose()
         }
         else {
@@ -101,7 +104,7 @@ function ConfirmDialog({ open, book, handleClose, setBooks }) {
         <Dialog open={open} onClose={handleClose}>
             <DialogTitle>
                 <Typography variant='h5' align='center'>
-                    Are you sure you want to delete {book.title}
+                    Are you sure you want to delete {category.title}
                 </Typography>
             </DialogTitle>
             <DialogContent>
