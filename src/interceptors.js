@@ -30,26 +30,22 @@ export default function interceptors(history) {
         // Any status codes that falls outside the range of 2xx cause this function to trigger
         // Do something with response error
         let { status } = error.response
-
+        let originalRequest = error.config
         if (status === 403) {
-            return refreshAccessToken(history)
-        } else {
-            return Promise.reject(error);
+            await refreshAccessToken()
+            return axios(originalRequest)
+        } else if (status === 401) {
+            history.replace('/login')
         }
+        return Promise.reject(error);
     });
 }
 
-async function refreshAccessToken(history) {
-    try {
-        let refresh_Token = window.localStorage.getItem('refresh_Token')
-        let response = await axios.post('/auth/token', {
-            token: refresh_Token,
-        })
-        if (response.status === 200) {
-            window.localStorage.setItem('access_Token', response.data.access_Token)
-            return await axios.get('/books')
-        }
-    } catch (err) {
-        history.replace('/login')
+async function refreshAccessToken() {
+    let response = await axios.post('/auth/token', {
+        token: window.localStorage.getItem('refresh_Token'),
+    })
+    if (response.status === 200) {
+        window.localStorage.setItem('access_Token', response.data.access_Token)
     }
 }
