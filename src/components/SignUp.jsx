@@ -28,7 +28,7 @@ export default function SignUp() {
     const history = useHistory()
 
     const classes = useStyles()
-    const url = 'http://localhost:3300/auth/signup'
+    const url = 'https://library-management-back-end.herokuapp.com/auth/signup'
     let submitForm = async () => {
         setLoading(true)
         let formData = new FormData()

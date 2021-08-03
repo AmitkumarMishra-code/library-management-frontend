@@ -2,7 +2,7 @@ import axios from 'axios'
 
 
 export default function interceptors(history) {
-    axios.defaults.baseURL = 'http://localhost:3300/'
+    axios.defaults.baseURL = 'https://library-management-back-end.herokuapp.com/'
 
     axios.interceptors.request.use(function(req) {
         // Do something before request is sent

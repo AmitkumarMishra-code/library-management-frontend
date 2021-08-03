@@ -81,7 +81,7 @@ export default function BooksList() {
 function ConfirmDialog({ open, book, handleClose, setBooks }) {
     const [deleting, setDeleting] = useState(false)
     const [error, setError] = useState('')
-    const url = 'http://localhost:3300/books'
+    const url = 'https://library-management-back-end.herokuapp.com/books'
 
     let deleteHandler = async () => {
         setDeleting(true)

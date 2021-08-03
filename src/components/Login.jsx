@@ -18,7 +18,7 @@ export default function Login() {
     const [password, setPassword] = useState('')
     const [disabled, setDisabled] = useState(false)
     const [error, setError] = useState('')
-    const url = 'http://localhost:3300/auth/login'
+    const url = 'https://library-management-back-end.herokuapp.com/auth/login'
     const history = useHistory()
 
     let handleLogin = async () => {

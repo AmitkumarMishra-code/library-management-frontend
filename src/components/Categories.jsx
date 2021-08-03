@@ -84,7 +84,7 @@ export default function Categories() {
 function ConfirmDialog({ open, category, handleClose, setCategories }) {
     const [deleting, setDeleting] = useState(false)
     const [error, setError] = useState('')
-    const url = 'http://localhost:3300/books'
+    const url = 'https://library-management-back-end.herokuapp.com/books'
 
     let deleteHandler = async () => {
         setDeleting(true)
